@@ -137,10 +137,16 @@ except Exception as e:
 # ==========================================
 # Face Detector
 # ==========================================
-face_cascade = cv2.CascadeClassifier(
-    cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
-)
+import requests
 
+cascade_filename = "haarcascade_frontalface_default.xml"
+if not os.path.exists(cascade_filename):
+    url = "https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml"
+    res = requests.get(url)
+    with open(cascade_filename, "wb") as f:
+        f.write(res.content)
+
+face_cascade = cv2.CascadeClassifier(cascade_filename)
 def detect_face(image):
     # PIL Image → NumPy Array
     image = np.array(image)
