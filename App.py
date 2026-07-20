@@ -137,7 +137,15 @@ except Exception as e:
 # ==========================================
 # Face Detector
 # ==========================================
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+def get_face_cascade():
+    # cv2.data check if available
+    if hasattr(cv2, 'data') and hasattr(cv2.data, 'haarcascades'):
+        cascade_path = cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
+    else:
+        cascade_path = cv2.samples.findFile("haarcascades/haarcascade_frontalface_default.xml")
+    return cv2.CascadeClassifier(cascade_path)
+
+face_cascade = get_face_cascade()
 
 def detect_face(image):
     # PIL Image → NumPy Array
