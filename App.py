@@ -5,8 +5,6 @@ import streamlit as st
 import torch
 import timm
 import cv2
-st.write("OpenCV Path:", cv2.__file__)
-st.write("OpenCV Version:", cv2.__version__)
 import numpy as np
 from PIL import Image
 from torchvision import transforms
