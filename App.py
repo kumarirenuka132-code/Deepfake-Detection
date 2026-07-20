@@ -137,13 +137,15 @@ except Exception as e:
 # ==========================================
 # Face Detector
 # ==========================================
+import urllib.request
+
+@st.cache_resource
 def get_face_cascade():
-    # cv2.data check if available
-    if hasattr(cv2, 'data') and hasattr(cv2.data, 'haarcascades'):
-        cascade_path = cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
-    else:
-        cascade_path = cv2.samples.findFile("haarcascades/haarcascade_frontalface_default.xml")
-    return cv2.CascadeClassifier(cascade_path)
+    cascade_filename = "haarcascade_frontalface_default.xml"
+    if not os.path.exists(cascade_filename):
+        cascade_url = "https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml"
+        urllib.request.urlretrieve(cascade_url, cascade_filename)
+    return cv2.CascadeClassifier(cascade_filename)
 
 face_cascade = get_face_cascade()
 
