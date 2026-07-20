@@ -139,15 +139,12 @@ except Exception as e:
 # ==========================================
 import urllib.request
 
-@st.cache_resource
-def get_face_cascade():
-    cascade_filename = "haarcascade_frontalface_default.xml"
-    if not os.path.exists(cascade_filename):
-        cascade_url = "https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml"
-        urllib.request.urlretrieve(cascade_url, cascade_filename)
-    return cv2.CascadeClassifier(cascade_filename)
+cascade_filename = "haarcascade_frontalface_default.xml"
+if not os.path.exists(cascade_filename):
+    cascade_url = "https://raw.githubusercontent.com/opencv/opencv/master/data/haarcascades/haarcascade_frontalface_default.xml"
+    urllib.request.urlretrieve(cascade_url, cascade_filename)
 
-face_cascade = get_face_cascade()
+face_cascade = cv2.CascadeClassifier(cascade_filename)
 
 def detect_face(image):
     # PIL Image → NumPy Array
