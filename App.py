@@ -5,6 +5,8 @@ import streamlit as st
 import torch
 import timm
 import cv2
+st.write("OpenCV Path:", cv2.__file__)
+st.write("OpenCV Version:", cv2.__version__)
 import numpy as np
 from PIL import Image
 from torchvision import transforms
@@ -12,7 +14,8 @@ from collections import Counter
 import tempfile
 import os
 import gdown
-
+import streamlit as st
+import torch
 # ==========================================
 # Page Configuration
 # ==========================================
@@ -146,7 +149,12 @@ if not os.path.exists(cascade_filename):
     with open(cascade_filename, "wb") as f:
         f.write(res.content)
 
-face_cascade = cv2.CascadeClassifier(cascade_filename)
+face_cascade = cv2.CascadeClassifier(str(cascade_filename))
+
+if face_cascade.empty():
+    st.error("Failed to load Haar Cascade XML file.")
+    st.stop()
+    
 def detect_face(image):
     # PIL Image → NumPy Array
     image = np.array(image)
